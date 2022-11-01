@@ -17,7 +17,7 @@
 # Comment for future
 from flask import Flask, json, Response, request, render_template
 from werkzeug.utils import secure_filename
-from os import path, getcwd
+from os import path, getcwd, remove as remove_file
 import time
 from db import Database
 from face import Face
@@ -183,6 +183,7 @@ def recognize():
             file.save(file_path)
 
             user_id = app.face.recognize(filename)
+            remove_file(file_path)
             if user_id:
                 user = get_user_by_id(user_id)
                 message = {"message": "Hey we found {0} matched with your face image".format(user["name"]),
